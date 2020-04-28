@@ -1,0 +1,31 @@
+version: '3'
+services:
+    mysqldb:
+        image: mysql:5.7
+        volumes:
+            - mysql_storage:/var/lib/mysql
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: 12@pawaNji
+            MYSQL_USER: pawan
+            MYSQL_PASSWORD: dheeth
+            MYSQL_DATABASE: dbjoomla
+
+    myjoomla:
+        image: joomla:php7.3-apache
+        restart: always
+        depends_on:
+            - mysqldb
+        ports:
+            - 4002:80
+        environment:
+            JOOMLA_DB_HOST: mysqldb
+            JOOMLA_DB_USER: pawan
+            JOOMLA_DB_PASSWORD: dheeth
+            JOOMLA_DB_NAME: dbjoomla
+        volumes:
+            - joomla_storage:/var/www/html
+
+volumes:
+    joomla_storage:
+    mysql_storage:
